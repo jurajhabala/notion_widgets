@@ -31,7 +31,12 @@
     }
 
     async function loadImages() {
-  const res = await fetch(`${SERVER_URL}/files`);
+  const res = await fetch(`${SERVER_URL}/files`,{
+      method: "get",
+      headers: new Headers({
+        "ngrok-skip-browser-warning": "69420",
+      }),
+    });
   const urls = await res.json();
 
   const container = document.getElementById('images');
