@@ -31,20 +31,21 @@
     }
 
     async function loadImages() {
-      const res = await fetch(`${SERVER_URL}/files`);
-      const urls = await res.json();
+  const res = await fetch(`${SERVER_URL}/files`);
+  const urls = await res.json();
 
-      const container = document.getElementById('images');
-      container.innerHTML = '';
+  const container = document.getElementById('images');
+  container.innerHTML = ''; // Clear previous images
 
-      urls.forEach(url => {
-        const img = document.createElement('img');
-        img.src = url;
-        img.style.width = '200px';
-        img.style.margin = '10px';
-        container.appendChild(img);
-      });
-    }
+  // Loop through the URLs and create an <img> tag for each one
+  urls.forEach(url => {
+    const img = document.createElement('img');
+    img.src = url;
+    img.style.width = '200px';
+    img.style.margin = '10px';
+    container.appendChild(img);
+  });
+}
 
     window.onload = loadImages;
   </script>
