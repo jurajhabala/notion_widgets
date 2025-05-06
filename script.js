@@ -1,20 +1,37 @@
-// List of image URLs
-const imageUrls = [
-    "https://cdn.pixabay.com/photo/2015/04/23/22/00/new-year-background-736885_960_720.jpg",
-    "https://unbiased-relaxing-barnacle.ngrok-free.app/files/bremmsstrahlung.png"
-  ];
-  
-  // Function to display images
-  const displayImages = () => {
-    const gallery = document.getElementById("imageGallery");
-  
-    // Loop through the list of URLs
-    imageUrls.forEach(url => {
-      const imgElement = document.createElement("img");
-      imgElement.src = url;  // Set the image source to the URL
-      gallery.appendChild(imgElement);  // Append the image to the gallery
+const SERVER_URL = "https://unbiased-relaxing-barnacle.ngrok-free.app";
+
+const displayImages = async () => {
+  const gallery = document.getElementById("imageGallery");
+
+  try {
+    const res = await fetch(`${SERVER_URL}/files`, {
+      headers: {
+        "ngrok-skip-browser-warning": "69420",
+        "Accept": "application/json"
+      }
     });
-  };
-  
-  // Call the function to display images
-  displayImages();
+
+    const imageUrls = await res.json();
+    gallery.innerHTML = "";
+
+    for (const url of imageUrls) {
+      const imageRes = await fetch(url, {
+        headers: {
+          "ngrok-skip-browser-warning": "69420"
+        }
+      });
+
+      const blob = await imageRes.blob();
+      const imgURL = URL.createObjectURL(blob);
+
+      const img = document.createElement("img");
+      img.src = imgURL;
+      img.alt = "Uploaded image";
+      gallery.appendChild(img);
+    }
+  } catch (error) {
+    console.error("Image loading failed:", error);
+  }
+};
+
+displayImages();
