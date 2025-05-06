@@ -1,6 +1,6 @@
 // List of image URLs
 const imageUrls = [
-    "https://unbiased-relaxing-barnacle.ngrok-free.app/files/bethe_bloch.png",
+    "https://cdn.pixabay.com/photo/2015/04/23/22/00/new-year-background-736885_960_720.jpg",
     "https://unbiased-relaxing-barnacle.ngrok-free.app/files/bremmsstrahlung.png"
   ];
   
