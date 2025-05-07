@@ -1,38 +1,20 @@
-/* Basic body styling */
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  /* Title Styling */
-  h2 {
-    color: #333;
-  }
-  
-  /* Gallery container to organize images */
-  #imageGallery {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  /* Individual image styling */
-  img {
-    width: 200px;
-    height: 200px;
-    margin: 10px;
-    object-fit: cover;
-    border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease-in-out;
-  }
-  
-  /* Add zoom effect on hover */
-  img:hover {
-    transform: scale(1.05);
-  }
+ /* Black & white theme */
+ body { background: #111; color: #eee; font-family: Arial, sans-serif; display: flex; flex-direction: column; align-items: center; padding: 2rem; }
+ h1, h2 { margin: 0.5em 0; }
+
+ /* Drop zone styling */
+ .drop-zone { width: 300px; height: 150px; border: 2px dashed #eee; border-radius: 8px; display: flex; align-items: center; justify-content: center; text-align: center; margin-bottom: 1em; cursor: pointer; transition: background 0.2s; }
+ .drop-zone.dragover { background: rgba(255,255,255,0.1); }
+ .drop-zone__prompt { color: #ccc; }
+ .drop-zone__input { display: none; }
+
+ /* Buttons */
+ .btn { padding: 0.5em 1em; margin: 0.5em; background: #eee; color: #111; border: none; border-radius: 4px; cursor: pointer; font-weight: bold; }
+ .btn:hover { background: #ddd; }
+
+ /* Gallery */
+ #imageGallery { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 1em; }
+ #imageGallery img { width: 200px; height: 200px; object-fit: cover; border: 1px solid #444; border-radius: 4px; }
+
+ /* File count display */
+ #fileCount { margin-top: 0.5em; color: #ccc; }

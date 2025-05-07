@@ -1,87 +1,76 @@
-<!--<!DOCTYPE html>
-<html>
-    
-<head>
-  <title>Image Upload</title> 
-</head>
-<body>
-  <h1>Upload an Image</h1>
-  <input type="file" id="fileInput" />
-  <button onclick="upload()">Upload</button>
-
-  <h2>Uploaded Images</h2>
-  <div id="images"></div>
-
-  <script>
-    const SERVER_URL = 'https://unbiased-relaxing-barnacle.ngrok-free.app'; // Replace this with your real Ngrok URL
-
-    async function upload() {
-      const file = document.getElementById('fileInput').files[0];
-      if (!file) return alert('Select a file first.');
-
-      const formData = new FormData();
-      formData.append('file', file);
-
-      await fetch(`${SERVER_URL}/upload`, {
-        method: 'POST',
-        body: formData
-      });
-
-      alert('Upload successful!');
-      loadImages();
-    }
-
-    async function loadImages() {
-  const res = await fetch(`${SERVER_URL}/files`,{
-      method: "get",
-      headers: new Headers({
-        "ngrok-skip-browser-warning": "69420",
-      }),
-    });
-  const urls = await res.json();
-
-  const container = document.getElementById('images');
-  container.innerHTML = ''; // Clear previous images
-
-  // Loop through the URLs and create an <img> tag for each one
-  urls.forEach(url => {
-    const img = document.createElement('img');
-    img.src = url;
-    img.style.width = '200px';
-    img.style.margin = '10px';
-    container.appendChild(img);
-  });
-}
-
-    window.onload = loadImages;
-  </script>
-</body>
-</html>-->
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Image Gallery</title>
-  <!-- Link to the external CSS file -->
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <h1>Upload an Image</h1>
-  <input type="file" id="fileInput" multiple/>
-  <button onclick="upload()">Upload</button>
-  <button onclick="displayImages()">Reload</button>
+  <h2>Upload Images</h2>
 
-  <h2>Uploaded Images</h2>
+  <div id="dropZone" class="drop-zone">
+    <input type="file" id="fileInput" multiple class="drop-zone__input" />
+    <p class="drop-zone__prompt">Drag & drop files here or click to select</p>
+  </div>
+  <div id="fileCount">No files selected</div>
+  <div class="buttons">
+    <button class="btn" onclick="upload()">Upload</button>
+    <button class="btn" onclick="displayImages()">Reload</button>
+  </div>
   <div id="imageGallery"></div>
-
-  <!-- Link to the external JavaScript file -->
   <script>
-    const SERVER_URL = "https://unbiased-relaxing-barnacle.ngrok-free.app";
+      const SERVER_URL = "https://unbiased-relaxing-barnacle.ngrok-free.app";
+    let droppedFiles = [];
 
-const displayImages = async () => {
+    const dropZone = document.getElementById('dropZone');
+    const fileInput = document.getElementById('fileInput');
+    const fileCount = document.getElementById('fileCount');
+
+    dropZone.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', () => handleFiles(fileInput.files));
+
+    dropZone.addEventListener('dragover', ev => {
+      ev.preventDefault();
+      dropZone.classList.add('dragover');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+    dropZone.addEventListener('drop', ev => {
+      ev.preventDefault();
+      dropZone.classList.remove('dragover');
+      const files = ev.dataTransfer.files;
+      handleFiles(files);
+    });
+
+    function handleFiles(files) {
+      droppedFiles = Array.from(files);
+      fileCount.textContent = `${droppedFiles.length} file(s) ready to upload`;
+    }
+
+
+    const upload = async () => {
+      if (droppedFiles.length === 0) {
+        alert('Select at least one file.');
+        return;
+      }
+
+      for (const file of droppedFiles) {
+        const formData = new FormData();
+        formData.append('file', file);
+        try {
+          await fetch(`${SERVER_URL}/upload`, { method: 'POST', body: formData });
+        } catch (error) {
+          console.error(`Error uploading ${file.name}:`, error);
+        }
+      }
+      alert('All files uploaded!');
+      droppedFiles = [];
+      fileCount.textContent = 'No files selected';
+    };
+
+
+    const displayImages = async () => {
   const gallery = document.getElementById("imageGallery");
 
   try {
@@ -116,26 +105,6 @@ const displayImages = async () => {
 };
 
 
-const upload = async () => {
-  const files = document.getElementById('fileInput').files;
-  if (files.length === 0) return alert('Select at least one file.');
-
-  for (const file of files) {
-    const formData = new FormData();
-    formData.append('file', file); // Keep the field name consistent with your server
-
-    try {
-      await fetch(`${SERVER_URL}/upload`, {
-        method: 'POST',
-        body: formData
-      });
-    } catch (error) {
-      console.error(`Error uploading ${file.name}:`, error);
-    }
-  }
-
-  alert('All files uploaded!');
-};
   </script>
 </body>
 </html>
