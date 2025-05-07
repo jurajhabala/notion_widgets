@@ -56,8 +56,8 @@
     window.onload = loadImages;
   </script>
 </body>
-</html>
--->
+</html>-->
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -69,6 +69,11 @@
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+  <h1>Upload an Image</h1>
+  <input type="file" id="fileInput" multiple/>
+  <button onclick="upload()">Upload</button>
+  <button onclick="displayImages()">Reload</button>
+
   <h2>Uploaded Images</h2>
   <div id="imageGallery"></div>
 

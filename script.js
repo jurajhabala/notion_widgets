@@ -34,4 +34,24 @@ const displayImages = async () => {
   }
 };
 
-displayImages();
+
+const upload = async () => {
+  const files = document.getElementById('fileInput').files;
+  if (files.length === 0) return alert('Select at least one file.');
+
+  for (const file of files) {
+    const formData = new FormData();
+    formData.append('file', file); // Keep the field name consistent with your server
+
+    try {
+      await fetch(`${SERVER_URL}/upload`, {
+        method: 'POST',
+        body: formData
+      });
+    } catch (error) {
+      console.error(`Error uploading ${file.name}:`, error);
+    }
+  }
+
+  alert('All files uploaded!');
+};
